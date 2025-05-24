@@ -8,7 +8,7 @@ cron
 
 if [ "$1" == "" ];
 then
-./mtproto-proxy -u nobody -p 8888 -H 8889 -S $SECRET --aes-pwd proxy-secret proxy-multi.conf -M $WORKERS --nat-info $(hostname --ip-address):$IP --http-stats
+./mtproto-proxy -u nobody -p 8888 -H 8889 -S $SECRET -c 20000 --aes-pwd proxy-secret proxy-multi.conf -M $WORKERS --nat-info $(hostname --ip-address):$IP --http-stats
 else
 exec "$1"
 fi
