@@ -1,13 +1,9 @@
 # OS
 FROM ubuntu:latest
 # Set version label
-LABEL maintainer="github.com/Dofamin"
+LABEL maintainer="github.com/dangdungcntt"
 LABEL image="MTProxy"
 LABEL OS="Ubuntu/latest"
-COPY container-image-root/ /
-# ARG & ENV
-ARG SECRET
-ENV SECRET=${SECRET:-ec4dd80983dbf12d6b354cf7bcfe9a48}
 ARG WORKERS
 ENV WORKERS=${WORKERS:-1}
 ARG MTPROTO_REPO_URL
@@ -24,8 +20,6 @@ RUN apt -y update > /dev/null 2>&1;\
     apt install -y gcc-9 g++-9 cpp-9 > /dev/null 2>&1;\
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9 > /dev/null 2>&1;\
 # Clone the repo:
-    IP_EXT=$(curl ifconfig.co/ip -s) ;\
-    IP_INT=$(hostname --ip-address) ;\
     git clone ${MTPROTO_REPO_URL} /srv/MTProxy > /dev/null 2>&1 ;\
 # To build, simply run make, the binary will be in objs/bin/mtproto-proxy:
     cd /srv/MTProxy ; \
@@ -50,12 +44,11 @@ RUN apt -y update > /dev/null 2>&1;\
     ╚═╝     ╚═╝   ╚═╝   ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝ \e[0m \n\
     All is setup and done! \n\
     For access MTProxy use this link: \n\
-    \e[1;33mhttps://t.me/proxy?server=$IP_EXT&port=443&secret=$Secret\e[0m"
+    \e[1;33mtg://proxy?server=<ip>&port=<port>&secret=<secret>\e[0m"
 # Change WORKDIR
 WORKDIR /srv/MTProxy/objs/bin/
-# HEALTHCHECK
-HEALTHCHECK --interval=60s --timeout=30s --start-period=10s CMD curl -f http://localhost:8888/stats || exit 1
+COPY container-image-root/ /
 # Expose Ports:
 EXPOSE 8889/tcp 8889/udp
 # ENTRYPOINT
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+ENTRYPOINT "/entrypoint.sh"
