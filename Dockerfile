@@ -9,7 +9,7 @@ ENV WORKERS=${WORKERS:-1}
 ARG MTPROTO_REPO_URL
 ENV MTPROTO_REPO_URL=${MTPROTO_REPO_URL:-https://github.com/TelegramMessenger/MTProxy}
 WORKDIR /srv/
-ENV TZ=Europe/Moscow
+ENV TZ=Asia/Singapore
 # Update system packages:
 RUN apt -y update > /dev/null 2>&1;\
 # Fix for select tzdata region
