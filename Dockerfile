@@ -42,7 +42,8 @@ RUN apt -y update > /dev/null 2>&1;\
 # Change WORKDIR
 WORKDIR /srv/MTProxy/objs/bin/
 COPY container-image-root/ /
+RUN chmod +x /entrypoint.sh
 # Expose Ports:
 EXPOSE 8889/tcp 8889/udp
 # ENTRYPOINT
-ENTRYPOINT "/entrypoint.sh"
+ENTRYPOINT ["/entrypoint.sh"]
