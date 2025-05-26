@@ -1,11 +1,14 @@
 #!/bin/bash
 set -x
 
-[ "$IP" == "" ] && IP=$(curl ifconfig.co/ip -s)
+[ "$IP" == "" ] && IP=$(curl -s https://ipinfo.io/ip)
 
 curl -s https://core.telegram.org/getProxySecret -o /srv/MTProxy/objs/bin/proxy-secret
 curl -s https://core.telegram.org/getProxyConfig -o /srv/MTProxy/objs/bin/proxy-multi.conf
 cron
+
+MAX_CONNECTIONS=${MAX_CONNECTIONS:-25000}
+WORKERS=${WORKERS:-1}
 
 # Build mtproto-proxy command with conditional -P $TAG
 CMD="./mtproto-proxy -u nobody -p 8888 -H 8889 -S $SECRET -c $MAX_CONNECTIONS --aes-pwd proxy-secret proxy-multi.conf -M $WORKERS --nat-info $(hostname --ip-address):$IP --http-stats"
