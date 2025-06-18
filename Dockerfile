@@ -36,11 +36,7 @@ ENV TZ=Asia/Singapore
 RUN apt -y update > /dev/null 2>&1;\
 # Fix for select tzdata region
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone > /dev/null 2>&1;\
-    dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1;\
-# Install dependencies, you would need common set of tools.
-    apt -y install curl cron
-# Obtain current telegram configuration. It can change (occasionally), so we encourage you to update it once per day.
-RUN (crontab -l 2>/dev/null; echo '0 4 * * *  pkill -f mtproto-proxy  >> /var/log/cron.log 2>&1') | crontab - 
+    dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 # Change WORKDIR
 WORKDIR /srv/MTProxy/objs/bin/
 # Copy built binary
