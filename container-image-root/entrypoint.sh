@@ -5,7 +5,10 @@ set -x
 
 curl -s https://core.telegram.org/getProxySecret -o /srv/MTProxy/objs/bin/proxy-secret
 curl -s https://core.telegram.org/getProxyConfig -o /srv/MTProxy/objs/bin/proxy-multi.conf
-cron
+
+if [ -z "$DISABLE_CRON" ]; then
+    cron
+fi;
 
 MAX_CONNECTIONS=${MAX_CONNECTIONS:-25000}
 WORKERS=${WORKERS:-1}
